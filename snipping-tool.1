@@ -1,0 +1,150 @@
+.TH SNIPPING-TOOL 1 snipping-tool\-VERSION
+.SH NAME
+snipping-tool \- screen snips with pen, highlighter and OCR
+.SH SYNOPSIS
+.B snipping-tool
+.RB [ \-flwtsnhv ]
+.RB [ \-d
+.IR sec ]
+.RB [ \-o
+.IR file ]
+.RB [ \-i
+.IR file ]
+.RB [ \-g ]
+.SH DESCRIPTION
+.B snipping-tool
+takes a snip of the screen and puts it on the clipboard as
+.IR image/png .
+The screen is frozen first and shown under a white veil; the part to keep
+is selected with the mouse.
+.P
+Without options it works on the command line: drag a rectangle (a click
+without dragging takes the window under the pointer) and the snip goes to
+the clipboard, like
+.IP
+scrot \-s \-F \- | xclip \-selection clipboard \-t image/png
+.P
+The process that owns the clipboard stays in the background until another
+program takes the clipboard, so the snip can be pasted after
+.B snipping-tool
+returns.
+.P
+With
+.BR \-g " or " \-\-graphic
+it starts the window that looks like the Windows Snipping Tool: the
+.B New
+button with its snip types (free-form, rectangle, window, full screen),
+options, and after a snip the markup window with a pen, a highlighter, an
+eraser that removes whole strokes, saving, copying, sending by mail and
+text recognition.
+.SH OPTIONS
+.TP
+.BR \-g ", " \-\-graphic
+start the graphical version. With any other option
+.B \-g
+is ignored, so that an alias that adds it does not get in the way.
+.TP
+.BR \-f ", " \-\-full
+take the whole screen, no selection.
+.TP
+.BR \-w ", " \-\-window
+take the active window with its frame, no selection.
+.TP
+.BR \-l ", " \-\-free
+free-form selection: draw around the part to keep, the rest becomes white.
+.TP
+.BR \-s ", " \-\-save
+also save the snip into $HOME; the file name is printed.
+.TP
+.BR \-o ", " \-\-output " \fIfile\fP"
+also save the snip into
+.IR file ;
+.B \-
+writes it to the standard output.
+.TP
+.BR \-d ", " \-\-delay " \fIsec\fP"
+wait
+.I sec
+seconds before the screen is frozen.
+.TP
+.BR \-t ", " \-\-text
+recognize the text of the snip (OCR): print it and put it on the clipboard
+instead of the image.
+.TP
+.BR \-n ", " \-\-no\-copy
+do not touch the clipboard.
+.TP
+.BR \-i ", " \-\-input " \fIfile\fP"
+take the image from a PNG
+.I file
+instead of the screen (useful with
+.BR \-t ).
+.TP
+.BR \-h ", " \-\-help
+print usage.
+.TP
+.BR \-v ", " \-\-version
+print version.
+.SH SELECTION
+.TP
+.B Button1
+drag to select, click a window to take it.
+.TP
+.BR Escape ", " Button3
+cancel.
+.SH GRAPHICAL VERSION KEYS
+.TP
+.B Ctrl\-n
+new snip.
+.TP
+.B Ctrl\-s
+save as PNG.
+.TP
+.B Ctrl\-c
+copy the snip with the marks.
+.TP
+.B Ctrl\-z
+undo the last mark.
+.TP
+.B Ctrl\-t
+recognize text.
+.TP
+.B Ctrl\-q
+quit.
+.TP
+.B F1
+help.
+.TP
+.B Alt\-key, F10
+menus and buttons by their underlined letter.
+.SH FILES
+.TP
+.I ~/.config/snipping-tool/config
+settings of the Options dialog (also read by the command line version for
+the veil and the ink color).
+.SH CUSTOMIZATION
+.B snipping-tool
+is customized by creating a custom config.h and (re)compiling the source
+code. Icons are PNG files in icons/ converted with
+.BR "make icons" .
+.SH OCR
+The recognizer is meant for text rendered on screen in common fonts,
+Latin and Cyrillic, 10 to 18 pixels and more. Italics, handwriting and
+very small or decorative fonts are not recognized well.
+.SH EXAMPLES
+dwm, take a rectangle with Print and the active window with Shift-Print:
+.IP
+{ 0, XK_Print, spawn, SHCMD("snipping-tool") },
+.br
+{ ShiftMask, XK_Print, spawn, SHCMD("snipping-tool \-w") },
+.P
+Text of a part of the screen into the clipboard:
+.IP
+snipping-tool \-t
+.SH SEE ALSO
+.BR scrot (1),
+.BR xclip (1),
+.BR gocr (1)
+.SH BUGS
+X11 only; under Wayland the screen of XWayland applications is all it can
+see.

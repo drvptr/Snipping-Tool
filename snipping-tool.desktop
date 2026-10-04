@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Snipping Tool
+GenericName=Screenshot tool
+Comment=Snips of the screen with a pen, a highlighter and text recognition
+Exec=snipping-tool --graphic
+Icon=snipping-tool
+Terminal=false
+Categories=Utility;Graphics;
+Keywords=screenshot;snip;scrot;ocr;
+StartupWMClass=Snipping-tool
